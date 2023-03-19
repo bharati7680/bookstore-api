@@ -25,6 +25,7 @@
     "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "razorpay": "^2.8.6"
   }
 }
