@@ -9,3 +9,6 @@ router.get('/:isbn_13', booksController.getBookDetails)
 
 
 module.exports = router;
+
+//order - user_id, book_id, total_price
+//order bookMapping -  order_id, book_id, quantity

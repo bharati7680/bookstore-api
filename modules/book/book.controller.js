@@ -41,21 +41,10 @@ async function getBookList(req, res) {
 async function getBookDetails(req, res) {
 
     const isbn_13 = req.params.isbn_13
-    // const data = JSON.stringify(isbn_13)
 
-    
-    
         const bookDetails = await knex('books').where('isbn_13', isbn_13).first()
         console.log(bookDetails)
-        // const data = JSON.stringify(bookDetails)
-        // if(bookDetails) {
-        //     const data = JSON.parse(JSON.stringify(bookDetails))
-        //     console.log(data)
-        //     return res.send(data)
-        // } else {
-        //     console.log('error')
-        // }
-
+        
         return res.send(bookDetails)
 
 }
