@@ -99,28 +99,39 @@ async function getOrderList(req, res) {
     let orders = await knex.raw(`
         select 
             JSON_OBJECT(
-                "user_id", users.user_id,
-                "email", users.email,
                 "order_id", orders.order_id,
+                "total_price", orders.total_price,
+                "status", orders.status,
                 "books", JSON_ARRAYAGG(
                     JSON_OBJECT(
                         "book_id", order_book_mapping.book_id,
                         "quantity", order_book_mapping.quantity,
-                        "price", order_book_mapping.single_book_price
+                        "price", order_book_mapping.single_book_price,
+                        "name", books.name,
+                        "image", books.img_url
                     )
                 )
-            ) as orders
+            ) as order_details
         from users 
         join orders on orders.user_id = users.user_id
         join order_book_mapping on order_book_mapping.order_id = orders.order_id
+        join books on books.id = order_book_mapping.book_id 
         where users.user_id = ${userId}
         group by orders.order_id;
     `)
 
+    orders = orders[0]
+
+    let newOrders = []
+
+    orders.forEach((order) => {
+      newOrders.push(JSON.parse(order.order_details))
+    })
+
     res.send({
         message: "successful",
         data: {
-            orders
+            newOrders
         }
     })
 }
