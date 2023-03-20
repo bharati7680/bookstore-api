@@ -6,8 +6,8 @@ const {initOrder, getOrderList} = require('./order.controller' )
 
 
 
-router.post('/initorder', initOrder)
-router.get('/order-list', getOrderList)
+router.post('/initOrder', initOrder)
+router.get('/myorders', getOrderList)
 
 
 module.exports = router;
