@@ -85,7 +85,11 @@ async function login(req, res) {
 
     )
     res.send({
-        token: userJwt
+        error: false,
+        data: {
+            token: userJwt
+        }
+        
     })
 
 }

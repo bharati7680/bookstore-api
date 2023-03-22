@@ -3,11 +3,14 @@ const Razorpay = require("razorpay");
 
 async function initOrder(req, res) {
   let books = req.body.books;
-  //    console.log(books)
+  let callbackUrl = req.body.callbackUrl
+  
+     console.log(req.body)
+
 
   let bookIds = [];
   books.forEach((book) => {
-    bookIds.push(book.book_id);
+    bookIds.push(book.bookId);
   });
   const existingBooks = await knex("books").whereIn("id", bookIds);
 
@@ -21,7 +24,7 @@ async function initOrder(req, res) {
   let totalPrice = 0;
 
   existingBooks.forEach((book) => {
-    let data = books.find((b) => b.book_id === book.id);
+    let data = books.find((b) => b.bookId === book.id);
     totalPrice += book.price * data.quantity;
   });
 
@@ -36,7 +39,7 @@ async function initOrder(req, res) {
 
   let orderBookMapping = [];
   existingBooks.forEach((book) => {
-    let data = books.find((b) => b.book_id === book.id);
+    let data = books.find((b) => b.bookId === book.id);
     let obj = {
       order_id: order.order_id,
       book_id: book.id,
@@ -70,7 +73,7 @@ async function initOrder(req, res) {
         contact: "1235678945"
     },
     expire_by: expiredTime,
-    callback_url: "http://localhost:3000/my_orders"
+    callback_url: callbackUrl
   };
   instance.paymentLink.create(options, function(err, rz_order) {
     console.log(err);
@@ -99,16 +102,16 @@ async function getOrderList(req, res) {
     let orders = await knex.raw(`
         select 
             JSON_OBJECT(
-                "order_id", orders.order_id,
-                "total_price", orders.total_price,
+                "orderId", orders.order_id,
+                "totalPrice", orders.total_price,
                 "status", orders.status,
-                "books", JSON_ARRAYAGG(
+                "bookDetails", JSON_ARRAYAGG(
                     JSON_OBJECT(
-                        "book_id", order_book_mapping.book_id,
+                        "bookId", order_book_mapping.book_id,
                         "quantity", order_book_mapping.quantity,
                         "price", order_book_mapping.single_book_price,
                         "name", books.name,
-                        "image", books.img_url
+                        "img_url", books.img_url
                     )
                 )
             ) as order_details
@@ -131,7 +134,7 @@ async function getOrderList(req, res) {
     res.send({
         message: "successful",
         data: {
-            newOrders
+            orders:newOrders
         }
     })
 }
