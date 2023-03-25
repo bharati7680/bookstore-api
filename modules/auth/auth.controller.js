@@ -20,8 +20,8 @@ async function signUp(req, res) {
 
     if(user){
         res.send({
-            Error: true,
-            Message:"Email already exists"
+            error: true,
+            message:"Email already exists"
         })
         return
     }
@@ -40,8 +40,8 @@ async function signUp(req, res) {
     await knex('users').insert(newUser)
 
     res.send({
-        Error: false,
-        Message: "Account created successfully"
+        error: false,
+        message: "Account created successfully"
     })
 
 }
@@ -55,8 +55,8 @@ async function login(req, res) {
 
     if(!user) {
         res.send({
-            Error: true,
-            Message: "Invalid email or password"
+            error: true,
+            message: "Invalid email or password"
         })
 
         return
@@ -67,8 +67,8 @@ async function login(req, res) {
 
     if(!matched) {
         res.send({
-            Error: true,
-            Message: "Invalid email or password"
+            error: true,
+            message: "Invalid email or password"
         })
         return
     }
