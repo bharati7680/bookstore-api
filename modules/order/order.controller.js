@@ -120,7 +120,8 @@ async function getOrderList(req, res) {
         join order_book_mapping on order_book_mapping.order_id = orders.order_id
         join books on books.id = order_book_mapping.book_id 
         where users.user_id = ${userId}
-        group by orders.order_id;
+        group by orders.order_id
+        order by orders.order_date desc;
     `)
 
     orders = orders[0]

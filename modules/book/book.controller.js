@@ -4,7 +4,7 @@ const knex = require('../../config/knex')
 async function getBookList(req, res) {
 
     const page = req.query.page || 1
-    const limit = req.query.limit || 5
+    const limit = req.query.limit || 8
     const offset = (page - 1) * limit
 
     const books = await knex('books')
